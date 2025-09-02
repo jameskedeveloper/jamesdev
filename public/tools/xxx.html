@@ -1,0 +1,426 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JamesTech Adult Search & Downloader</title>
+  <style>
+    /* -------------  BLUE‑WATER THEME ------------- */
+    :root {
+      --primary: #00aaff;
+      --primary-dark: #0077cc;
+      --accent: #00d4ff;
+      --success: #2ecc71;
+      --danger: #e74c3c;
+      --bg: #eaf7ff;
+      --card: #ffffffee;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg);
+  color: #05213d;
+  min-height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem 1rem 6rem;
+  position: relative;
+}
+
+/* BACKGROUND WAVES */
+.wave {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 200%;
+  height: 300px;
+  background: url("data:image/svg+xml,%3Csvg width='1440' height='560' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 67L60 78.7C120 90 240 113 360 118.3C480 123 600 111 720 107.7C840 104 960 110 1080 113.3C1200 117 1320 117 1380 117.3L1440 117L1440 561L1380 561C1320 561 1200 561 1080 561C960 561 840 561 720 561C600 561 480 561 360 561C240 561 120 561 60 561L0 561Z' fill='%2300aaff' fill-opacity='0.35'/%3E%3C/svg%3E");
+  background-size: cover;
+  animation: wave 10s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes wave {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* CONTAINERS */
+.container {
+  width: 100%;
+  max-width: 1000px;
+  background: var(--card);
+  backdrop-filter: blur(6px);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px var(--shadow);
+  padding: 2rem 1.5rem 3rem;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: var(--primary-dark);
+  letter-spacing: 0.5px;
+}
+
+/* INPUTS & BUTTONS */
+.input-group {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+.input-group input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--primary);
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+}
+.btn {
+  padding: 0.75rem 1.25rem;
+  background: var(--primary);
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.25s, transform 0.15s;
+}
+.btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* LOADING SPINNER */
+.loading {
+  display: none;
+  text-align: center;
+  margin: 1.5rem 0;
+}
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 4px solid transparent;
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ERROR */
+.error {
+  background: rgba(231, 76, 60, 0.15);
+  color: var(--danger);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  display: none;
+}
+
+/* SEARCH RESULTS GRID */
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 6px 12px var(--shadow);
+  transition: transform 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.thumb {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 0.75rem 1rem 1.25rem;
+}
+
+.title {
+  font-weight: 600;
+  max-height: 3rem;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  margin-bottom: 0.5rem;
+}
+
+.meta {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 0.75rem;
+}
+
+.download-btn {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  padding: 0.5rem 0;
+  background: var(--success);
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.25s, transform 0.15s;
+}
+.download-btn:hover {
+  background: #27ae60;
+  transform: translateY(-2px);
+}
+
+/* NO RESULTS */
+.no-results {
+  text-align: center;
+  font-size: 1rem;
+  margin-top: 2rem;
+  display: none;
+  color: #555;
+}
+
+/* DOWNLOAD VIEW */
+.download-view {
+  display: none;
+}
+
+.back-btn {
+  margin-bottom: 1rem;
+  background: #95a5a6;
+}
+.back-btn:hover {
+  background: #7f8c8d;
+}
+
+.player {
+  width: 100%;
+  max-width: 720px;
+  margin: 1rem auto 2rem;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 12px var(--shadow);
+  display: none;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.option {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 4px 8px var(--shadow);
+}
+.option a {
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  background: var(--primary);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.25s, transform 0.15s;
+}
+.option a:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 560px) {
+  .thumb {
+    height: 140px;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <div class="wave"></div>
+  <main class="container">
+    <h1>JamesTech Adult Search & Downloader</h1><!-- -------- SEARCH SECTION -------- -->
+<section id="search-section">
+  <div class="input-group">
+    <input type="text" id="query" placeholder="Search for adult videos..." />
+    <button id="search-btn" class="btn">Search</button>
+  </div>
+  <div id="search-error" class="error"></div>
+  <div id="search-loading" class="loading">
+    <div class="spinner"></div>
+    <p>Searching...</p>
+  </div>
+  <div id="no-results" class="no-results">No videos found.</div>
+  <div id="results" class="results-grid"></div>
+</section>
+
+<!-- -------- DOWNLOAD / PLAY SECTION -------- -->
+<section id="download-section" class="download-view">
+  <button id="back-btn" class="btn back-btn">← Back to Results</button>
+  <h2 id="dl-title"></h2>
+  <video id="player" class="player" controls></video>
+  <div class="options-grid" id="options-grid">
+    <!-- Links injected here -->
+  </div>
+  <div id="dl-error" class="error"></div>
+  <div id="dl-loading" class="loading">
+    <div class="spinner"></div>
+    <p>Fetching links...</p>
+  </div>
+</section>
+
+  </main>  <script>
+    (function () {
+      // API endpoints
+      const API_SEARCH = "https://princeapi.zone.id/api/search/xvideossearch?apikey=prince&query=";
+      const API_DOWNLOAD = "https://apis-keith.vercel.app/download/porn?url=";
+
+      // DOM refs
+      const queryInput = document.getElementById("query");
+      const searchBtn = document.getElementById("search-btn");
+      const searchError = document.getElementById("search-error");
+      const searchLoading = document.getElementById("search-loading");
+      const resultsGrid = document.getElementById("results");
+      const noResults = document.getElementById("no-results");
+
+      const downloadView = document.getElementById("download-section");
+      const backBtn = document.getElementById("back-btn");
+      const dlTitle = document.getElementById("dl-title");
+      const player = document.getElementById("player");
+      const optionsGrid = document.getElementById("options-grid");
+      const dlError = document.getElementById("dl-error");
+      const dlLoading = document.getElementById("dl-loading");
+
+      /* ---------- HELPERS ---------- */
+      const show = (el) => (el.style.display = "block");
+      const hide = (el) => (el.style.display = "none");
+      const clearChildren = (el) => (el.innerHTML = "");
+
+      const handleError = (el, msg) => {
+        el.textContent = msg;
+        show(el);
+      };
+
+      /* ---------- SEARCH LOGIC ---------- */
+      function performSearch() {
+        const term = queryInput.value.trim();
+        if (!term) return handleError(searchError, "Please enter a term");
+
+        hide(searchError);
+        hide(noResults);
+        clearChildren(resultsGrid);
+        show(searchLoading);
+
+        fetch(API_SEARCH + encodeURIComponent(term))
+          .then((r) => (r.ok ? r.json() : Promise.reject("Network error")))
+          .then((data) => {
+            const list = (data && data.results) || [];
+            if (!list.length) return show(noResults);
+
+            list.forEach((v) => {
+              if (!v.url) return;
+              const card = document.createElement("div");
+              card.className = "card";
+              card.innerHTML = `
+                <img src="${v.thumb || "https://via.placeholder.com/300x180?text=No+Image"}" class="thumb" alt="${v.title || "Untitled"}" />
+                <div class="card-body">
+                  <div class="title">${v.title || "Untitled"}</div>
+                  <div class="meta">${v.duration || "N/A"}</div>
+                  <a href="#" class="download-btn">Play / Download</a>
+                </div>`;
+
+              card.querySelector(".download-btn").addEventListener("click", (e) => {
+                e.preventDefault();
+                openDownloadView(v);
+              });
+
+              resultsGrid.appendChild(card);
+            });
+          })
+          .catch((err) => handleError(searchError, err.toString()))
+          .finally(() => hide(searchLoading));
+      }
+
+      /* ---------- DOWNLOAD VIEW ---------- */
+      function openDownloadView(video) {
+        // basic UI state
+        document.getElementById("search-section").style.display = "none";
+        downloadView.style.display = "block";
+        hide(dlError);
+        hide(player);
+        clearChildren(optionsGrid);
+        show(dlLoading);
+        dlTitle.textContent = video.title || "Untitled";
+
+        fetch(API_DOWNLOAD + encodeURIComponent(video.url))
+          .then((r) => (r.ok ? r.json() : Promise.reject("Network error")))
+          .then((data) => {
+            const res = data && data.result;
+            if (!res || !res.downloads) throw new Error("No links found");
+
+            // choose playable source: prefer highQuality > lowQuality > hlsStream
+            const src = res.downloads.highQuality || res.downloads.lowQuality || res.downloads.hlsStream;
+            if (src) {
+              player.src = src;
+              show(player);
+            }
+
+            // Build option cards
+            const makeOption = (label, link) => {
+              const div = document.createElement("div");
+              div.className = "option";
+              div.innerHTML = `<h3>${label}</h3><a href="${link}" target="_blank">Download</a>`;
+              return div;
+            };
+            if (res.downloads.lowQuality) optionsGrid.appendChild(makeOption("Low Quality", res.downloads.lowQuality));
+            if (res.downloads.highQuality) optionsGrid.appendChild(makeOption("High Quality", res.downloads.highQuality));
+            if (res.downloads.hlsStream) optionsGrid.appendChild(makeOption("HLS Stream", res.downloads.hlsStream));
+          })
+          .catch((err) => handleError(dlError, err.toString()))
+          .finally(() => hide(dlLoading));
+      }
+
+      /* ---------- EVENTS ---------- */
+      searchBtn.addEventListener("click", performSearch);
+      queryInput.addEventListener("keypress", (e) => e.key === "Enter" && performSearch());
+      backBtn.addEventListener("click", () => {
+        downloadView.style.display = "none";
+        document.getElementById("search-section").style.display = "block";
+        player.pause();
+      });
+    })();
+  </script></body>
+</html>

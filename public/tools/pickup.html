@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JamesTech Pickup Lines</title>
+  <style>
+    body {
+  background: url('https://files.catbox.moe/9sw3vj.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #0f0;
+  font-family: 'Courier New', monospace;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+  padding: 20px;
+}
+
+    #loader {
+      border: 6px solid #0f0;
+      border-top: 6px solid transparent;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 30px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    #lineDisplay {
+      font-size: 1.4rem;
+      margin: 20px 0;
+      min-height: 80px;
+      text-align: center;
+      white-space: pre-wrap;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      background: #0f0;
+      color: #000;
+      padding: 10px 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #55ff55;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 10px;
+      font-size: 0.85rem;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="loader"></div>
+  <div id="lineDisplay"></div>
+
+  <div class="buttons">
+    <button onclick="showNextLine()">Next Line</button>
+    <button onclick="copyLine()">Copy</button>
+  </div>
+
+  <footer>⚡ Powered by JamesTech ⚡</footer>
+
+  <script>
+    const pickupLines = [
+      "Is your dad a boxer? Because you’re a knockout!",
+      "If beauty were time, you’d be eternity.",
+      "You must be made of copper and tellurium because you’re Cu-Te.",
+      "Do you believe in love at first sight—or should I walk by again?",
+      "Are you a campfire? Because you're hot and I want s'more.",
+      "Do you like Star Wars? Because Yoda one for me!",
+      "Are you a keyboard? Because you’re just my type.",
+      "If you were a vegetable, you'd be a cute-cumber.",
+      "Is your name Chapstick? Because you’re da balm!",
+      "You must be a parking ticket, because you’ve got FINE written all over you.",
+      "Are you an alien? Because you just abducted my heart.",
+      "If you were a fruit, you'd be a fineapple.",
+      "Are you Netflix? Because I could binge you all day.",
+      "You're so sweet, you put Hershey's out of business.",
+      "Do you have a pencil? Cause I want to erase your past and write our future.",
+      "Was your father an artist? Because you're a masterpiece.",
+      "Are you Australian? Because when I look at you, I feel like I’m down under.",
+      "Are you the moon? Because even in the dark you shine.",
+      "Do you have a sunburn, or are you always this hot?",
+      "You must be tired—because you’ve been running through my mind all day.",
+      "If kisses were snowflakes, I’d send you a blizzard.",
+      "Do you have a name, or can I call you mine?",
+      "You must be a camera, because every time I look at you, I smile.",
+      "Are you cake? Because I want a piece of that.",
+      "Are you clouds? Because you make my day brighter.",
+      "Are we in a library? Because I’m checking you out.",
+      "Are you sugar? Because you’re sweet and addictive.",
+      "Are you made of stars? Because your eyes sparkle like the night sky.",
+      "Is your heart a lock? Because I’ve got the key.",
+      "Are you lightning? Because you just struck my heart.",
+      "If you were words on a page, you'd be fine print.",
+      "Is your nickname Google? Because you have everything I’ve been searching for.",
+      "Are you a blanket? Because I want to be wrapped in you.",
+      "Are you an angel? Because heaven is missing one.",
+  "Are you a magician? Because whenever I look at you, everyone else disappears.",
+  "Are you French? Because Eiffel for you.",
+  "Is your name Wi-Fi? Because I'm feeling a connection.",
+  "If beauty were time, you’d be eternity.",
+  "Are you a bank loan? Because you have my interest.",
+  "Do you believe in fate? Because I think we’ve just met ours.",
+  "Are you made of copper and tellurium? Because you’re Cu-Te.",
+  "Are you a keyboard? Because you’re just my type.",
+  "If you were a fruit, you’d be a fineapple.",
+  "Are you Netflix? Because I could binge you all night.",
+  "You must be a parking ticket—because you’ve got FINE written all over you.",
+  "Do you like raisins? How do you feel about a date?",
+  "You must be a magician, because whenever I look at you, everyone else disappears.",
+  "Are you a charger? Because without you, I’d die.",
+  "If I could rearrange the alphabet, I’d put U and I together.",
+  "Are you Google? Because you’ve got everything I’m searching for.",
+  "Your hand looks heavy—can I hold it for you?",
+  "Are you a campfire? Because you’re hot and I want s’more.",
+  "If you were a vegetable, you’d be a cute-cumber.",
+  "Are you the moon? Because you light up my darkest nights.",
+  "You must be tired because you’ve been running through my mind all day.",
+  "Can you take a picture with me? I want to prove to my friends that angels are real.",
+  "Is your name Chapstick? Because you’re da balm.",
+  "Are you a star? Because your beauty lights up the night.",
+  "Are you an alien? Because you just abducted my heart.",
+  "Is your dad a boxer? Because you're a knockout.",
+  "You must be made of sugar, because you're so sweet.",
+  "Is this the Hogwarts Express? Because it feels like you and I are headed somewhere magical.",
+  "Are you made of stardust? Because you sparkle.",
+  "Are you time? Because I can’t stop thinking about you.",
+  "Are you a time traveler? Because I see you in my future.",
+  "Can I follow you home? Cause my parents always told me to follow my dreams.",
+  "Is your name Ariel? Because we mermaid for each other.",
+  "Are you snow? Because my heart melts when I see you.",
+  "Do you have a pencil? Because I want to erase your past and write our future.",
+  "Are you an angel? Because heaven is missing one.",
+  "Are you thunder? Because you just shook my world.",
+  "Are you ice cream? Because you’re cool and irresistible.",
+  "Do you play soccer? Because you’re a keeper.",
+  "Are you sunrise? Because you brighten up my day.",
+  "Are you cake? Because I want a slice of you.",
+  "Is your smile illegal? Because it’s stealing my heart.",
+  "Do you have a map? Because I just got lost in your eyes.",
+  "Are you a painting? Because I could stare at you forever.",
+  "If kisses were snowflakes, I’d send you a blizzard.",
+  "Are you chocolate? Because life is sweeter with you.",
+  "Are you a genie? Because you make all my wishes come true.",
+  "Do you have a mirror? Because I see myself in your eyes.",
+  "Is your nickname Google? Because you answer everything I’m looking for.",
+  "You must be a hacker, because you just got into my heart.",
+  "Are you a light switch? Because you turn me on.",
+  "If you were a cat, you’d purr-fect.",
+  "Are you a rainbow? Because you brighten my world.",
+  "Can I take you to the doctor? Because you just broke my heart.",
+  "Do you like math? Because me + you = forever.",
+  "Are you the ocean? Because I’m lost at sea.",
+  "Is your skin made of velvet? Because you're touchable perfection.",
+  "Are you a spark? Because you set my heart on fire.",
+  "Are you gravity? Because you keep me grounded.",
+  "Are you made of sunshine? Because you're lighting up my life.",
+  "Is your name Joy? Because that’s all I feel around you.",
+  "Do you like music? Because you're the rhythm of my heart.",
+  "Are you a mirror? Because I see my happiness in you.",
+  "Are you a poem? Because every line is beautiful.",
+  "If you were a drink, you'd be fine wine.",
+  "Is your heart WiFi-enabled? Because I feel connected.",
+  "Are you an app? Because I can’t stop opening you in my mind.",
+  "Are you a comet? Because you light up the night.",
+  "Are you an eclipse? Because my world stops when I see you.",
+  "Are you lightning? Because you just struck my heart.",
+  "Are you a clock? Because you make every second count.",
+  "Are you destiny? Because I think we were meant to meet.",
+  "Are you perfume? Because you’re intoxicating.",
+  "Are you a note? Because I’ve got a melody stuck in my head.",
+  "Are you clouds? Because you make my day dreamy.",
+  "Are you code? Because I can’t debug my feelings for you.",
+  "Are you CSS? Because you make everything look better.",
+  "Are you JavaScript? Because you make things dynamic.",
+  "Are you a rocket? Because my heart is launching.",
+  "Are you a lightbulb? Because you brighten up every room.",
+  "Are you a whisper? Because you're soft and beautiful.",
+  "Are you stars? Because I get lost in your eyes.",
+  "Are you a hug? Because I feel warm around you.",
+  "Are you a kiss? Because I can’t get you off my mind.",
+  "Are you a flame? Because I burn for you.",
+  "Are you caffeine? Because I can’t start my day without you.",
+  "Are you my charger? Because I need you all the time.",
+  "Are you a web? Because I’m caught up in you.",
+  "Are you made of love? Because you complete me.",
+  "Are you a dream? Because I never want to wake up.",
+  "Are you gold? Because you’re pure and precious.",
+  "Are you a rose? Because you’re blooming in my heart.",
+  "Are you a whisper? Because you're soft, mysterious, and perfect.",
+  "Are you code? Because you’ve got no bugs.",
+  "Are you an emoji? Because you light up every message.",
+  "Are you a melody? Because you're stuck in my head.",
+  "Are you a spell? Because I’m enchanted.",
+  "Are you a robot? Because you’ve got perfect logic and beauty.",
+  "Are you the sky? Because I see my dreams in you.",
+  "Are you the sun? Because you make my heart melt.",
+      "You must be a magnet, because I’m attracted to you.",
+      "Are you rain? Because you make my heart melt.",
+      "Do you like science? Because I’ve got chemistry with you.",
+      "Are you espresso? Because you’ve bean on my mind.",
+      "Do you have a mirror? Because I see myself in your eyes.",
+      "Are you gravity? Because you keep pulling me in.",
+      "Do you play soccer? Because you’re a keeper.",
+      "You must be WiFi, because I’m feeling the connection.",
+      "Are you chocolate? Because you make everything better.",
+      "Are you a genie? Because you make my wishes come true.",
+      "Are you thunder? Because you’re booming in my heart.",
+      "Is your smile illegal? Because it’s stealing my heart.",
+      "You must be a hacker—because you just got into my heart.",
+      "Are you made of dreams? Because I don’t want to wake up.",
+      "If I had a rose for every time I thought of you, I’d be in a garden forever.",
+      "You’re the reason even Mondays feel magical."
+    ];
+
+    let currentIndex = 0;
+    const loader = document.getElementById('loader');
+    const lineDisplay = document.getElementById('lineDisplay');
+
+    function typeLine(line, callback) {
+      let index = 0;
+      lineDisplay.textContent = '';
+      const typer = setInterval(() => {
+        lineDisplay.textContent += line[index];
+        index++;
+        if (index >= line.length) {
+          clearInterval(typer);
+          if (callback) callback();
+        }
+      }, 40);
+    }
+
+    function showNextLine() {
+      loader.style.display = 'block';
+      lineDisplay.textContent = '';
+      setTimeout(() => {
+        loader.style.display = 'none';
+        const line = pickupLines[currentIndex];
+        typeLine(line);
+        currentIndex = (currentIndex + 1) % pickupLines.length;
+      }, 800);
+    }
+
+    function copyLine() {
+      const text = lineDisplay.textContent;
+      if (!text) return;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("✅ Copied to clipboard!");
+      });
+    }
+
+    // Show first line on load
+    showNextLine();
+  </script>
+</body>
+</html>

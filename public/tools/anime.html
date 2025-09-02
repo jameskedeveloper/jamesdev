@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Image Generator - James Dev</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Basic reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #fefefe;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #e91e63;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      width: 90%;
+      max-width: 400px;
+      margin-bottom: 15px;
+      border: 2px solid #e91e63;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #e91e63;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    .images {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      max-width: 1000px;
+    }
+
+    .image-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .image-card img {
+      width: 100%;
+      max-width: 250px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .image-card a {
+      margin-top: 10px;
+      background-color: #4caf50;
+      color: white;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #999;
+    }
+
+    /* Falling flowers animation */
+    .flower {
+      position: fixed;
+      top: -50px;
+      font-size: 24px;
+      animation: fall linear infinite;
+      z-index: 0;
+      opacity: 0.8;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-50px) rotate(0deg);
+      }
+      100% {
+        transform: translateY(110vh) rotate(360deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>🌸 AI Image Generator</h1>
+  <input type="text" id="promptInput" placeholder="Enter a prompt (e.g. Anime girl)" />
+  <button onclick="generateImages()">Generate</button>
+
+  <div class="images" id="imageContainer"></div>
+
+  <div class="footer">© James Dev</div>
+
+  <!-- Falling flowers -->
+  <script>
+    function createFlower() {
+      const flower = document.createElement('div');
+      flower.className = 'flower';
+      flower.textContent = '🌸';
+      flower.style.left = Math.random() * 100 + 'vw';
+      flower.style.animationDuration = (3 + Math.random() * 5) + 's';
+      flower.style.fontSize = (16 + Math.random() * 20) + 'px';
+      document.body.appendChild(flower);
+
+      setTimeout(() => flower.remove(), 8000);
+    }
+
+    setInterval(createFlower, 500);
+  </script>
+
+  <!-- Image Generator -->
+  <script>
+    async function generateImages() {
+      const prompt = document.getElementById("promptInput").value.trim();
+      const container = document.getElementById("imageContainer");
+      container.innerHTML = '';
+
+      if (!prompt) {
+        alert("Please enter a prompt!");
+        return;
+      }
+
+      const baseUrl = `https://img.hazex.workers.dev/?prompt=${encodeURIComponent(prompt)}`;
+
+      for (let i = 0; i < 5; i++) {
+        const imageUrl = `${baseUrl}&t=${Date.now()}_${i}`;
+        const card = document.createElement("div");
+        card.className = "image-card";
+
+        const img = document.createElement("img");
+        img.src = imageUrl;
+        img.alt = `Generated Image ${i + 1}`;
+
+        const downloadLink = document.createElement("a");
+        downloadLink.href = imageUrl;
+        downloadLink.download = `image-${i + 1}.jpg`;
+        downloadLink.textContent = "Download";
+
+        card.appendChild(img);
+        card.appendChild(downloadLink);
+        container.appendChild(card);
+      }
+    }
+  </script>
+</body>
+</html>

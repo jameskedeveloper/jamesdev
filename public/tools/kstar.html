@@ -1,0 +1,308 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>K Star Shop - By James Dev</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #b3e0ff, #e6f7ff);
+      overflow-x: hidden;
+    }
+    header {
+      padding: 30px 20px;
+      background: rgba(0, 123, 255, 0.2);
+      text-align: center;
+      color: #003366;
+    }
+    header h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+    /* Sidebar styles */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -260px;
+  width: 250px;
+  height: 100%;
+  background: rgba(0, 102, 204, 0.9);
+  color: #fff;
+  padding: 20px;
+  box-shadow: 3px 0 10px rgba(0,0,0,0.3);
+  transition: left 0.3s ease;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+}
+
+.sidebar h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  border-bottom: 1px solid #fff;
+  padding-bottom: 10px;
+}
+
+.sidebar a {
+  display: block;
+  margin: 10px 0;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: transform 0.2s;
+}
+
+.sidebar a:hover {
+  transform: translateX(5px);
+  color: #00e6e6;
+}
+
+/* Toggle Button */
+.sidebar-toggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: #00bfff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 18px;
+  border-radius: 5px;
+  z-index: 1001;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  transition: background 0.3s;
+}
+
+.sidebar-toggle:hover {
+  background: #0099cc;
+}
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    .categories button {
+      background: #0099cc;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .categories button:hover {
+      background: #0077aa;
+      transform: scale(1.05);
+    }
+    section {
+      padding: 40px 20px;
+    }
+    h2 {
+      text-align: center;
+      color: #004466;
+      margin-bottom: 20px;
+    }
+    .social-buttons {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.social-buttons a {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 8px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #000;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: transform 0.3s, background 0.3s;
+}
+
+.social-buttons a:hover {
+  transform: scale(1.05);
+  background: rgba(0, 150, 255, 0.8);
+  color: #fff;
+}
+
+.social-buttons img {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+    .products {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+    .product {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 12px;
+      padding: 15px;
+      width: 260px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .product img {
+      width: 100%;
+      border-radius: 10px;
+    }
+    .product h3 {
+      color: #006699;
+      margin: 10px 0;
+    }
+    .product p {
+      font-size: 0.95em;
+      color: #444;
+    }
+    .product a {
+      display: inline-block;
+      margin-top: 10px;
+      background: #0077b3;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    .product a:hover {
+      background: #005580;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>K Star Shop</h1>
+    <p>Digital services</p>
+    <p>Kstar shop online services are trusted services and digital automotive services created by prof- james to serve</p>
+  </header>
+  <!-- Sidebar Toggle Button -->
+<button class="sidebar-toggle" onclick="toggleSidebar()">☰ Menu</button>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+  <h2>K Star Shop</h2>
+ 
+  <a href="index2.html" class="info-btn"> More Information</a>
+</div>
+ <section id="whatsapp">
+    <h2>WhatsApp Services</h2>
+    <div class="products">
+      <div class="product">
+        <img src="https://files.catbox.moe/wk70pr.jpg" alt="WA Deployment">
+        <h3>WA Bot Deployment</h3>
+        <p>Get your bot deployed on WhatsApp. Price: Ksh 100 - 300</p>
+        <a href="https://wa.me/254785016388?text=I'm%20interested%20in%20WA%20bot%20deployment">Order on WhatsApp</a>
+      </div>
+      <div class="product">
+        <img src="https://files.catbox.moe/oc8erw.jpg" alt="bot development">
+        <h3>WA Bot Creation</h3>
+        <p>Full custom WhatsApp bot made. Price: Ksh 500 - 700</p>
+        <a href="https://wa.me/254785016388?text=I'm%20interested%20in%20WA%20bot%20creation">Order on WhatsApp</a>
+      </div>
+    </div>
+  </section>  <section id="websites">
+    <h2>Websites</h2>
+    <div class="products">
+      <div class="product">
+        <img src="https://files.catbox.moe/tkbnrr.jpg" alt="Website Development">
+        <h3>Website Development</h3>
+        <p>Professional websites for business or personal use. Price: Ksh 1,000 - 20,000</p>
+        <a href="https://wa.me/254785016388?text=I%20want%20a%20website%20developed">Order on WhatsApp</a>
+      </div>
+    </div>
+  </section>  <section id="ads">
+    <h2>Ads & Media</h2>
+    <div class="products">
+      <div class="product">
+        <img src="https://files.catbox.moe/8lcxip.jpg" alt="Ads Creation">
+        <h3>Ad Design & Modifying</h3>
+        <p>Catchy and high-converting ads created or improved. Price: Ksh 700</p>
+        <a href="https://wa.me/254785016388?text=I'm%20interested%20in%20ad%20design">Order on WhatsApp</a>
+      </div>
+    </div>
+  </section>  <section id="ai">
+    <h2>Billing</h2>
+    <div class="products">
+      <div class="product">
+        <img src="https://files.catbox.moe/87gdsj.jpg" alt="AI Tools">
+        <h3>online billing</h3>
+        <p>billing services example herouku billing,vps,panel and all billing we have all solutions and integrations for business services. Price: Custom</p>
+        <a href="https://wa.me/254704955033?text=Tell%20me%20more%20about%20billing%20tools">Order on WhatsApp</a>
+      </div>
+    </div>
+  </section>  <section id="scripts">
+    <h2>HACKING & MINECRAFT SC</h2>
+    <div class="products">
+      <div class="product">
+        <img src="https://files.catbox.moe/symtzs.jpg" alt="Custom Scripts">
+        <h3>Code & Scripts</h3>
+        <p>Custom JavaScript, Minecraft, automation scripts and more. Price: Custom</p>
+        <a href="https://wa.me/254785016388?text=Need%20custom%20code%20or%20scripts">Order on WhatsApp</a>
+      </div>
+    </div>
+  </section>  <section id="encryption">
+    <h2>Encryption</h2>
+    <div class="products">
+      <div class="product">
+        <img src="https://files.catbox.moe/7tw9y9.jpg" alt="Encryption Services">
+        <h3>Encryption Tools</h3>
+        <p>Obfuscation, encryption, and code protection tools. Price: 200</p>
+        <a href="https://wa.me/254785016388?text=I'm%20interested%20in%20encryption">Order on WhatsApp</a>
+      </div>
+    </div>
+  </section>  <section id="hosting">
+    <h2>Hosting</h2>
+    <div class="products">
+      <div class="product">
+        <img src="https://files.catbox.moe/qnmwas.jpg" alt="Hosting">
+        <h3>Panel & Bot Hosting</h3>
+        <p>Affordable hosting for your bot or site, Minecraft servers available too,ultra fast. Price: 100 unli</p>
+        <a href="https://wa.me/25485016388?text=I%20want%20to%20host%20a%20project">Order on WhatsApp</a>
+      </div>
+    </div>
+  </section>  <section id="telegram">
+    <h2>Telegram Bots creation</h2>
+    <div class="products">
+      <div class="product">
+        <img src="https://files.catbox.moe/nr88rv.jpg" alt="Telegram Bot">
+        <h3>Telegram Bot Creation</h3>
+        <p>Fast and modern Telegram bot builds. Price: 400</p>
+        <a href="https://wa.me/254785016388?text=Build%20me%20a%20Telegram%20bot">Order on WhatsApp</a>
+      </div>
+    </div>
+    <!-- Fixed Social Buttons -->
+<div class="social-buttons">
+  <a href="https://wa.me/254785016388" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp"> WhatsApp
+  </a>
+  <a href="https://whatsapp.com/channel/0029VaogSY74IBhJWe8b472H" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" alt="Telegram"> Channel
+  </a>
+  <a href="https://youtube.com/@james-j2i9h" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"> YouTube
+  </a>
+</div>
+  </section>
+<script>
+  function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.style.left = (sidebar.style.left === '0px') ? '-260px' : '0px';
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JamesTech Quotes</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 'Courier New', Courier, monospace;
+      box-sizing: border-box;
+    }
+    body {
+  margin: 0;
+  font-family: monospace;
+  color: #0f0;
+  overflow: hidden;
+}
+
+#bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  padding: 20px;
+}
+    #loadingScreen {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    .circle {
+      border: 5px solid #0f0;
+      border-top: 5px solid transparent;
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      animation: rotate 2s linear infinite;
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .circle span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #0f0;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    #log {
+      font-size: 1rem;
+      text-align: center;
+      height: 1.5rem;
+    }
+    #quoteApp {
+      display: none;
+      height: 100vh;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    #categorySelect {
+      margin-bottom: 1rem;
+    }
+    select {
+      background: black;
+      color: #0f0;
+      border: 1px solid #0f0;
+      padding: 0.4rem;
+      font-weight: bold;
+    }
+    #quote {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      max-width: 600px;
+    }
+    .btns {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    button {
+      background: #0f0;
+      color: black;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #55ff55;
+    }
+  </style>
+</head>
+<body>
+<video autoplay muted loop id="bg-video">
+  <source src="https://files.catbox.moe/50qplp.mp4" type="video/mp4">
+  Your browser does not support HTML5 video.
+</video>
+
+<div class="content">
+  <h1>Welcome to JamesTech</h1>
+  <p>This is a project portal for love and wisdom quotes.</p>
+</div>
+  <div id="loadingScreen">
+    <div class="circle"><span>JAMESTECH</span></div>
+    <div id="log"></div>
+  </div>
+
+  <div id="quoteApp">
+    <div id="categorySelect">
+      <label for="category">Select Category:</label>
+      <select id="category" onchange="switchCategory()">
+        <option value="love">❤️ Love</option>
+        <option value="wisdom">🧠 Wisdom</option>
+      </select>
+    </div>
+    <div id="quote"></div>
+    <div class="btns">
+      <button onclick="prevQuote()">Prev</button>
+      <button onclick="copyQuote()">Copy</button>
+      <button onclick="nextQuote()">Next</button>
+    </div>
+  </div>
+
+  <script>
+    const logs = [
+      "Initializing quantum quote engine...",
+      "Decrypting wisdom cache...",
+      "Accessing neural archives...",
+      "Finalizing quote module...",
+      "Welcome to JamesTech Quotes."
+    ];
+
+    let logIndex = 0;
+    const logElement = document.getElementById("log");
+
+    function typeLogLine(line, callback) {
+      let i = 0;
+      logElement.textContent = '';
+      const interval = setInterval(() => {
+        logElement.textContent += line.charAt(i);
+        i++;
+        if (i >= line.length) {
+          clearInterval(interval);
+          setTimeout(callback, 500);
+        }
+      }, 40);
+    }
+
+    function nextLog() {
+      if (logIndex < logs.length) {
+        typeLogLine(logs[logIndex], () => {
+          logIndex++;
+          nextLog();
+        });
+      } else {
+        setTimeout(() => {
+          document.getElementById("loadingScreen").style.display = "none";
+          document.getElementById("quoteApp").style.display = "flex";
+          showQuote();
+        }, 1000);
+      }
+    }
+
+    window.onload = nextLog;
+
+    const quoteData = {
+      love: [
+        "Love is not what you say. Love is what you do.",
+        "You are my today and all of my tomorrows.",
+  "You are every reason, every hope, and every dream I’ve ever had.",
+  "Love is not finding someone to live with. It’s finding someone you can’t live without.",
+  "When I’m with you, hours feel like seconds.",
+  "I didn’t choose you. My heart did.",
+  "Love makes your soul crawl out from its hiding place.",
+  "Every moment spent with you is like a beautiful dream come true.",
+  "I want all of my lasts to be with you.",
+  "You are the best thing I never planned.",
+  "Even in silence, our hearts speak.",
+  "You don’t cross my mind—you live in it.",
+  "I love you more than coffee. And that says a lot.",
+  "Forever is a long time, but I wouldn’t mind spending it by your side.",
+  "You are my favorite notification.",
+  "Home is wherever I’m with you.",
+  "Love doesn’t need to be perfect. It just needs to be true.",
+  "You're my kind of crazy.",
+  "Loving you is like breathing—I just can’t stop.",
+  "You're the reason I believe in love.",
+  "I fell for you, and haven’t gotten up since.",
+  "The heart that loves is always young.",
+  "You had me at my best, and you saw me at my worst.",
+  "The best love is the one that makes you a better person.",
+  "You’re the peanut butter to my jelly.",
+  "A true relationship is two imperfect people refusing to give up on each other.",
+  "You are the one I’ve been waiting for.",
+  "If love is the answer, could you rephrase the question?",
+  "I would rather spend one lifetime with you than face all the ages alone.",
+  "I never want to stop making memories with you.",
+  "You’re my today and all of my tomorrows.",
+  "We loved with a love that was more than love. – Edgar Allan Poe",
+  "Love is the greatest refreshment in life. – Picasso",
+  "The best proof of love is trust.",
+  "There is only one happiness in life: to love and be loved.",
+  "Love is a canvas furnished by nature and embroidered by imagination.",
+  "To love is to burn, to be on fire.",
+  "True love stories never have endings.",
+  "You complete me in ways I never knew I was broken.",
+  "I crave a love so deep, the ocean would be jealous.",
+  "You're my favorite place to go when my mind searches for peace.",
+  "The first time I saw you, my heart whispered: ‘That’s the one.’",
+        "I love you without knowing how, or when, or from where.",
+        "In your smile I see something more beautiful than the stars.",
+        "You had me at hello."
+      ],
+      wisdom: [
+        "The only limit to our realization of tomorrow is our doubts of today.",
+  "Smart people learn from everything, wise people learn from everyone.",
+  "Wisdom is the sunlight of the soul.",
+  "You don't always need a plan. Sometimes you just need to breathe, trust, and go.",
+  "Maturity is learning to walk away from people and situations that threaten your peace.",
+  "We can know only that we know nothing. And that is the highest degree of human wisdom.",
+  "Real knowledge is to know the extent of one’s ignorance. – Confucius",
+  "Sometimes not getting what you want is a wonderful stroke of luck.",
+  "The more you know, the more you realize you don’t know.",
+  "Wisdom is the daughter of experience.",
+  "Don’t just exist. Live with intention.",
+  "Doubt is the origin of wisdom.",
+  "Seek first to understand, then to be understood.",
+  "Learn from yesterday, live for today, hope for tomorrow.",
+  "In seeking wisdom thou art wise; in imagining that thou hast attained it — thou art a fool.",
+  "A man is wise with the wisdom of his time only.",
+  "Simplicity is the ultimate sophistication.",
+  "A wise man adapts himself to circumstances.",
+  "You can't change the wind, but you can adjust the sails.",
+  "Wisdom is avoiding all thoughts that weaken you.",
+  "The true sign of intelligence is not knowledge but imagination.",
+  "Think before you speak. Read before you think.",
+  "The only real failure is the failure to try.",
+  "Don’t waste your time with explanations. People only hear what they want to hear.",
+  "Success is a lousy teacher. It seduces smart people into thinking they can’t lose.",
+  "What you do today can improve all your tomorrows.",
+  "It’s not what happens to you, but how you react to it that matters.",
+  "An empty vessel makes the loudest sound.",
+  "He who is brave is free.",
+  "The mind is everything. What you think, you become.",
+  "A smooth sea never made a skilled sailor.",
+  "All great achievements require time.",
+  "Discipline is the bridge between goals and accomplishment.",
+  "Be as you wish to seem.",
+  "Wisdom is the power to put our time and our knowledge to proper use.",
+  "When the student is ready, the teacher will appear.",
+  "Don’t be pushed around by the fears in your mind.",
+  "Experience is simply the name we give our mistakes.",
+  "The man who asks a question is a fool for a minute, the man who does not ask is a fool for life.",
+  "The only way to do great work is to love what you do.",
+  "Judge less. Reflect more.",
+        "In the middle of difficulty lies opportunity. - Einstein",
+        "Talk is cheap. Show me the code. - Linus Torvalds",
+        "Stay hungry, stay foolish. - Steve Jobs",
+        "Simplicity is the soul of efficiency."
+      ]
+    };
+
+    let currentCategory = 'love';
+    let currentIndex = 0;
+
+    function showQuote() {
+      const quote = quoteData[currentCategory][currentIndex];
+      document.getElementById("quote").textContent = quote;
+    }
+
+    function nextQuote() {
+      const quotes = quoteData[currentCategory];
+      currentIndex = (currentIndex + 1) % quotes.length;
+      showQuote();
+    }
+
+    function prevQuote() {
+      const quotes = quoteData[currentCategory];
+      currentIndex = (currentIndex - 1 + quotes.length) % quotes.length;
+      showQuote();
+    }
+
+    function copyQuote() {
+      const quote = quoteData[currentCategory][currentIndex];
+      navigator.clipboard.writeText(quote)
+        .then(() => alert("Quote copied!"))
+        .catch(() => alert("Failed to copy."));
+    }
+
+    function switchCategory() {
+      const select = document.getElementById("category");
+      currentCategory = select.value;
+      currentIndex = 0;
+      showQuote();
+    }
+  </script>
+
+</body>
+</html>

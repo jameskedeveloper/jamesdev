@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ALL DOWNLOAD </title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Courier New', monospace;
+      background: #111;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    input, select, button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+    }
+
+    input, select {
+      background-color: #222;
+      color: #fff;
+    }
+
+    button {
+      background-color: #00ff88;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #00cc6e;
+    }
+
+    #result {
+      margin-top: 20px;
+      word-wrap: break-word;
+    }
+
+    video {
+      width: 100%;
+      max-width: 100%;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 8px;
+      color: #00ffcc;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="snow"></canvas>
+
+<div class="container">
+  <h1>AIO DOWNLOAD</h1>
+  <p>Download from TikTok, Facebook, Instagram, and more</p>
+
+  <select id="platform">
+    <option value="aio">All Supported (AIO)</option>
+    <option value="facebook">Facebook</option>
+    <option value="tiktok">TikTok</option>
+    <option value="instagram">Instagram</option>
+  </select>
+
+  <input type="text" id="videoUrl" placeholder="Paste your video link here..." />
+
+  <button onclick="downloadVideo()">Download Video</button>
+
+  <div id="result"></div>
+</div>
+
+<script>
+  async function downloadVideo() {
+    const url = document.getElementById('videoUrl').value.trim();
+    const resultDiv = document.getElementById('result');
+
+    if (!url) {
+      resultDiv.innerHTML = "<p style='color:red;'>❌ Please enter a video URL.</p>";
+      return;
+    }
+
+    resultDiv.innerHTML = "<p>📥 Fetching video...</p>";
+
+    try {
+      const apiUrl = `https://apis.davidcyriltech.my.id/download/aio?url=${encodeURIComponent(url)}`;
+      const res = await axios.get(apiUrl);
+
+      if (res.data.success) {
+        const { title, low_quality, high_quality } = res.data.video;
+
+        let output = `<h3>${title}</h3>`;
+        if (high_quality) {
+          output += `<a href="${high_quality}" download>⬇️ Download HD</a>`;
+          output += `<video controls src="${high_quality}"></video>`;
+        }
+        if (low_quality) {
+          output += `<a href="${low_quality}" download>⬇️ Download SD</a>`;
+        }
+
+        resultDiv.innerHTML = output;
+      } else {
+        resultDiv.innerHTML = "<p style='color:red;'>❌ Failed to fetch video. Check the link.</p>";
+      }
+    } catch (err) {
+      console.error(err);
+      resultDiv.innerHTML = "<p style='color:red;'>❌ Error fetching video. Try again later.</p>";
+    }
+  }
+</script>
+
+<!-- Rising Snow Background Canvas Script -->
+<script>
+  const canvas = document.getElementById('snow');
+  const ctx = canvas.getContext('2d');
+  let width, height;
+
+  function resize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  const snowflakes = Array.from({ length: 100 }, () => ({
+    x: Math.random() * width,
+    y: Math.random() * height,
+    r: Math.random() * 2 + 1,
+    d: Math.random() * 1 + 0.5
+  }));
+
+  function drawSnow() {
+    ctx.clearRect(0, 0, width, height);
+    ctx.fillStyle = 'white';
+    ctx.beginPath();
+    snowflakes.forEach(s => {
+      ctx.moveTo(s.x, s.y);
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2, true);
+    });
+    ctx.fill();
+    updateSnow();
+  }
+
+  function updateSnow() {
+    snowflakes.forEach(s => {
+      s.y -= s.d;
+      if (s.y < 0) {
+        s.y = height;
+        s.x = Math.random() * width;
+      }
+    });
+  }
+
+  setInterval(drawSnow, 30);
+</script>
+
+</body>
+</html>
