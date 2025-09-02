@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Info | Verified James</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* subtle animations */
+    @keyframes spin-slow { from {transform:rotate(0);} to {transform:rotate(360deg);} }
+    .animate-spin-slow { animation: spin-slow 6s linear infinite; }
+
+    @keyframes slideIn { from { transform: translateY(12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .animate-slideIn { animation: slideIn 0.45s ease-out; }
+
+    /* respect reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .animate-spin-slow, .animate-slideIn { animation: none !important; }
+    }
+
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body class="bg-blue-900 text-white min-h-screen">
+  <!-- Hidden Audio -->
+  <audio id="bg-audio" autoplay loop hidden>
+    <source src="assets/bg.mp3" type="audio/mpeg">
+    Your browser does not support audio playback.
+  </audio>
+  <!-- HEADER / BADGES -->
+  <header class="max-w-3xl mx-auto mt-6 bg-blue-800 rounded-xl shadow-lg p-5 border-b-4 border-blue-500 text-center">
+    <div class="flex items-center justify-center space-x-3">
+      <img src="https://cdn-icons-png.flaticon.com/512/5968/5968896.png" alt="Meta logo" class="w-8" />
+      <h1 class="text-2xl font-bold tracking-tight">James</h1>
+      <img src="https://cdn-icons-png.flaticon.com/512/1828/1828640.png" alt="Verified" class="w-6 animate-spin-slow" />
+    </div>
+
+    <p class="text-sm mt-1 opacity-80">Verified Developer For Building practical tools & websites</p>
+
+    <!-- Stars -->
+    <div class="flex justify-center mt-3 space-x-1">
+      <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" alt="star" class="w-4">
+      <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" alt="star" class="w-4">
+      <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" alt="star" class="w-4">
+      <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" alt="star" class="w-4">
+      <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" alt="star" class="w-4">
+    </div>
+
+    <!-- Profile -->
+    <div class="mt-4">
+      <img src="https://files.catbox.moe/cthxbc.jpg" alt="James profile" class="w-20 h-20 rounded-full border-2 border-white mx-auto object-cover">
+    </div>
+    <!-- Popup Ad -->
+<div id="popup-ad" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-[9999]">
+  <div class="bg-blue-700 rounded-xl shadow-2xl p-6 max-w-sm w-full text-center animate-popup relative">
+    
+    <!-- Cancel Button -->
+    <button id="close-ad" class="absolute top-3 right-3 text-white text-lg bg-red-500 w-8 h-8 flex items-center justify-center rounded-full opacity-50 cursor-not-allowed" disabled>
+      ✕
+    </button>
+
+    <!-- Ad Logo -->
+    <img id="ad-logo" src="" alt="Ad Logo" class="w-16 h-16 mx-auto mb-3 animate-bounce">
+
+    <!-- Ad Title -->
+    <h2 class="text-2xl font-bold mb-3" id="ad-title"></h2>
+
+    <!-- Ad Content -->
+    <p class="mb-4" id="ad-content"></p>
+
+    <!-- Learn More Button -->
+    <a id="ad-link" href="#" target="_blank" 
+       class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold py-2 px-4 rounded-full transition transform hover:scale-105">
+       <img src="https://cdn-icons-png.flaticon.com/512/271/271210.png" class="w-4 h-4" alt="Learn Icon">
+       take me there
+    </a>
+
+    <!-- Skip Button -->
+    <button id="skip-ad" class="mt-4 bg-gray-900 text-white px-4 py-2 rounded-lg opacity-50 cursor-not-allowed" disabled>
+      Skip (5)
+    </button>
+  </div>
+</div>
+
+<style>
+@keyframes popupIn {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.animate-popup {
+  animation: popupIn 0.5s ease forwards;
+}
+</style>
+
+<script>
+const ads = [
+{
+  title: "💰 EARN",
+  content: "Sofabet just got a new plan — earn 20 bob per referral!",
+  link: "https://sofabets.com?ref=67f3a3c8952d77f5800979ff",
+  logo: "https://cdn-icons-png.flaticon.com/512/2331/2331937.png"
+},
+  {
+    title: "🐙 TRASHCORE SYSTEM",
+    content: "Trashcore dev just launched new WhatsApp bot ever ",
+    link: "https://github.com/Tennor-modz/trashcore-system/fork",
+    logo: "https://cdn-icons-png.flaticon.com/512/25/25231.png"
+  },
+  {
+    title: "🔥 Big and limited offer",
+    content: "k star shop sales unlimited panel only 70 kenya money 0.9$ only!",
+    link: "https://jamesofficial.onrender.com/tools/kstar.html",
+    logo: "https://cdn-icons-png.flaticon.com/512/888/888879.png"
+  },
+  {
+    title: "🥳 Boost Your Coding Skills!",
+    content: "Join our free coding bootcamp and level up now.",
+    link: "https://chat.whatsapp.com/G17FOZjkMKVDTBb54G921D?mode=ac_t",
+    logo: "https://cdn-icons-png.flaticon.com/512/1055/1055646.png"
+  }
+];
+
+let currentAdIndex = 0;
+const popup = document.getElementById("popup-ad");
+const skipBtn = document.getElementById("skip-ad");
+const closeBtn = document.getElementById("close-ad");
+
+function showAd(index) {
+  const ad = ads[index];
+  document.getElementById("ad-title").textContent = ad.title;
+  document.getElementById("ad-content").textContent = ad.content;
+  document.getElementById("ad-link").href = ad.link;
+  document.getElementById("ad-logo").src = ad.logo;
+
+  popup.classList.remove("hidden");
+  skipBtn.disabled = true;
+  closeBtn.disabled = true;
+  skipBtn.classList.add("opacity-50", "cursor-not-allowed");
+  closeBtn.classList.add("opacity-50", "cursor-not-allowed");
+
+  let countdown = 5;
+  skipBtn.textContent = `Skip (${countdown})`;
+  const timer = setInterval(() => {
+    countdown--;
+    skipBtn.textContent = countdown > 0 ? `Skip (${countdown})` : "Skip";
+    if (countdown <= 0) {
+      clearInterval(timer);
+      skipBtn.disabled = false;
+      closeBtn.disabled = false;
+      skipBtn.classList.remove("opacity-50", "cursor-not-allowed");
+      closeBtn.classList.remove("opacity-50", "cursor-not-allowed");
+    }
+  }, 1000);
+}
+
+function closeAd() {
+  popup.classList.add("hidden");
+  currentAdIndex++;
+  if (currentAdIndex < ads.length) {
+    // Show next ad after 5s delay
+    setTimeout(() => showAd(currentAdIndex), 5000);
+  }
+}
+
+skipBtn.addEventListener("click", closeAd);
+closeBtn.addEventListener("click", closeAd);
+
+// First ad after 2 seconds
+setTimeout(() => showAd(0), 2000);
+</script>
+   
+    <!-- Meta + Verified row -->
+    <div class="mt-4 inline-flex items-center bg-blue-700 px-3 py-2 rounded-lg space-x-3">
+      <img src="https://cdn-icons-png.flaticon.com/512/5968/5968896.png" alt="meta" class="w-6">
+      <span class="font-semibold">james</span>
+      <img src="https://cdn-icons-png.flaticon.com/512/1828/1828640.png" alt="verified" class="w-5">
+    </div>
+  </header>
+
+  <!-- OPTIONS -->
+  <main class="max-w-3xl mx-auto mt-6 px-4">
+    <div class="flex justify-center gap-3">
+      <button id="btnJourney" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg shadow transition" aria-controls="journey">My Journey</button>
+      <button id="btnProject" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg shadow transition" aria-controls="project">About Project</button>
+    </div>
+
+    <!-- placeholder prompt -->
+    <div id="placeholder" class="mt-6 bg-blue-700 rounded-xl p-6 text-center text-blue-100">
+      <p class="mb-1">Choose an option above to view details.</p>
+      <p class="text-sm opacity-80">My Journey (2019 → now) • About Project (2022 → tools)</p>
+    </div>
+
+    <!-- CONTENT: Hidden until button click -->
+    <section id="journey" class="hidden mt-6 bg-blue-700 rounded-xl p-6 shadow-lg text-blue-50">
+      <h2 class="text-xl font-semibold mb-3 border-b border-blue-400 pb-2">How It All Started (2019 - Present)</h2>
+
+      <p class="mb-4 leading-relaxed">
+        My coding adventure began in <strong>2019</strong> with a second-hand laptop and a lot of curiosity. I learned the basics — HTML and CSS — by building small pages and trying out simple designs. Those first projects were imperfect but gave me that addictive spark: seeing code transform into something visible and useful.
+      </p>
+
+      <p class="mb-4 leading-relaxed">
+        In <strong>2020</strong>, I moved on to JavaScript and basic backend concepts. I spent nights debugging, following tutorials, and rebuilding the same small apps until they worked. It was slow progress, but each deployed project and piece of feedback taught me practical problem-solving and the importance of persistence.
+      </p>
+
+      <p class="mb-4 leading-relaxed">
+        By <strong>2021</strong>, I was tackling more complex builds — interactive sites, simple APIs, and automation scripts. I started helping friends and local small projects, which pushed me to write cleaner code, consider user needs, and manage projects from concept to deployment. Collaboration and real users accelerated my growth.
+      </p>
+
+      <p class="mb-4 leading-relaxed">
+        Looking back, the journey was never just about learning languages or frameworks. It became a way of thinking: break problems down, iterate fast, and learn from mistakes. That mindset is what keeps me building today — always improving, always experimenting.
+      </p>
+    </section>
+
+    <section id="project" class="hidden mt-6 bg-blue-700 rounded-xl p-6 shadow-lg text-blue-50">
+      <h2 class="text-xl font-semibold mb-3 border-b border-blue-400 pb-2">Creating Tools (2022 - Today)</h2>
+
+      <p class="mb-4 leading-relaxed">
+        In <strong>2022</strong> I shifted from learning to creating — focusing on small, practical tools that solve real problems. I began with automation scripts to remove repetitive tasks, and quickly expanded into messaging bots and utilities that make day-to-day tasks faster and simpler.
+      </p>
+
+      <p class="mb-4 leading-relaxed">
+        Over the next months I built chatbots, messaging automation (including WhatsApp tooling), and features such as media downloaders, music play commands, and auto-status utilities. Each tool taught me new technical lessons: API integration, file handling, rate limits, and how to design commands that are reliable in real environments.
+      </p>
+
+      <p class="mb-4 leading-relaxed">
+        I also made a conscious choice to ship real, working functionality — no placeholders. That meant building end-to-end experiences, handling edge cases, and listening closely to user feedback. Improving UX, keeping commands predictable, and ensuring the tools actually help people became core priorities.
+      </p>
+
+      <p class="mb-4 leading-relaxed">
+        Today these tools continue to evolve — I'm iterating on performance, adding safeguards, and planning features that bring real value. The goal is the same: build straightforward, reliable tools that save time and make technology more accessible.
+      </p>
+    </section>
+
+    
+  </main>
+<!-- Bottom Nav -->
+<div class="fixed bottom-0 left-0 right-0 bg-blue-800 text-white flex justify-around p-2 shadow-inner z-50">
+  <!-- Home -->
+  <a href="/dashboard.html" class="text-center flex flex-col items-center">
+    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M3 10.5L12 4l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10.5z" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="block text-xs">Home</span>
+  </a>
+
+  <!-- Info -->
+  <a href="/info.html" class="text-center flex flex-col items-center">
+    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M12 8v.01" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M11.5 12.5h1v3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="block text-xs">Info</span>
+  </a>
+
+  <!-- Friends -->
+  <a href="/friends.html" class="text-center flex flex-col items-center">
+    <svg class="w-6 h-6 animate-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M16 11a3 3 0 1 0-6 0" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M2 20v-1a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v1" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="block text-xs">Friends</span>
+  </a>
+
+  <!-- Projects -->
+  <a href="/projects.html" class="text-center flex flex-col items-center">
+    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M3 7h5l2 3h11v9H3z" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="block text-xs">Projects</span>
+  </a>
+</div>
+
+  <!-- SCRIPTS -->
+  <script>
+    const btnJourney = document.getElementById('btnJourney');
+    const btnProject = document.getElementById('btnProject');
+    const secJourney = document.getElementById('journey');
+    const secProject = document.getElementById('project');
+    const placeholder = document.getElementById('placeholder');
+
+    function hideAll() {
+      secJourney.classList.add('hidden');
+      secProject.classList.add('hidden');
+    }
+
+    function showSection(id) {
+      hideAll();
+      placeholder.classList.add('hidden');
+      const el = document.getElementById(id);
+      if (!el) return;
+      // reflow trick to restart animation if re-opening
+      el.classList.remove('hidden');
+      el.classList.remove('animate-slideIn');
+      void el.offsetWidth;
+      el.classList.add('animate-slideIn');
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    btnJourney.addEventListener('click', () => showSection('journey'));
+    btnProject.addEventListener('click', () => showSection('project'));
+
+    // keyboard accessibility: allow Enter/Space to trigger
+    [btnJourney, btnProject].forEach(btn => {
+      btn.setAttribute('role','button');
+      btn.tabIndex = 0;
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          btn.click();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

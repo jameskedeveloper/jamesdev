@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Friends</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .animate-spin-slow {
+      animation: spin 4s linear infinite;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white">
+  <!-- Hidden Audio -->
+  <audio id="bg-audio" autoplay loop hidden>
+    <source src="assets/bg.mp3" type="audio/mpeg">
+    Your browser does not support audio playback.
+  </audio>
+      <!-- Popup Ad -->
+<div id="popup-ad" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-[9999]">
+  <div class="bg-blue-700 rounded-xl shadow-2xl p-6 max-w-sm w-full text-center animate-popup relative">
+    
+    <!-- Cancel Button -->
+    <button id="close-ad" class="absolute top-3 right-3 text-white text-lg bg-red-500 w-8 h-8 flex items-center justify-center rounded-full opacity-50 cursor-not-allowed" disabled>
+      ✕
+    </button>
+
+    <!-- Ad Logo -->
+    <img id="ad-logo" src="" alt="Ad Logo" class="w-16 h-16 mx-auto mb-3 animate-bounce">
+
+    <!-- Ad Title -->
+    <h2 class="text-2xl font-bold mb-3" id="ad-title"></h2>
+
+    <!-- Ad Content -->
+    <p class="mb-4" id="ad-content"></p>
+
+    <!-- Learn More Button -->
+    <a id="ad-link" href="#" target="_blank" 
+       class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold py-2 px-4 rounded-full transition transform hover:scale-105">
+       <img src="https://cdn-icons-png.flaticon.com/512/271/271210.png" class="w-4 h-4" alt="Learn Icon">
+       take me there
+    </a>
+
+    <!-- Skip Button -->
+    <button id="skip-ad" class="mt-4 bg-gray-900 text-white px-4 py-2 rounded-lg opacity-50 cursor-not-allowed" disabled>
+      Skip (5)
+    </button>
+  </div>
+</div>
+
+<style>
+@keyframes popupIn {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.animate-popup {
+  animation: popupIn 0.5s ease forwards;
+}
+</style>
+
+<script>
+const ads = [
+{
+  title: "💰 EARN",
+  content: "Sofabet just got a new plan — earn 20 bob per referral!",
+  link: "https://sofabets.com?ref=67f3a3c8952d77f5800979ff",
+  logo: "https://cdn-icons-png.flaticon.com/512/2331/2331937.png"
+},
+  {
+    title: "🐙 TRASHCORE SYSTEM",
+    content: "Trashcore dev just launched new WhatsApp bot ever ",
+    link: "https://github.com/Tennor-modz/trashcore-system/fork",
+    logo: "https://cdn-icons-png.flaticon.com/512/25/25231.png"
+  },
+  {
+    title: "🔥 Big and limited offer",
+    content: "k star shop sales unlimited panel only 70 kenya money 0.9$ only!",
+    link: "https://jamesofficial.onrender.com/tools/kstar.html",
+    logo: "https://cdn-icons-png.flaticon.com/512/888/888879.png"
+  },
+  {
+    title: "🥳 Boost Your Coding Skills!",
+    content: "Join our free coding bootcamp and level up now.",
+    link: "https://chat.whatsapp.com/G17FOZjkMKVDTBb54G921D?mode=ac_t",
+    logo: "https://cdn-icons-png.flaticon.com/512/1055/1055646.png"
+  }
+];
+
+let currentAdIndex = 0;
+const popup = document.getElementById("popup-ad");
+const skipBtn = document.getElementById("skip-ad");
+const closeBtn = document.getElementById("close-ad");
+
+function showAd(index) {
+  const ad = ads[index];
+  document.getElementById("ad-title").textContent = ad.title;
+  document.getElementById("ad-content").textContent = ad.content;
+  document.getElementById("ad-link").href = ad.link;
+  document.getElementById("ad-logo").src = ad.logo;
+
+  popup.classList.remove("hidden");
+  skipBtn.disabled = true;
+  closeBtn.disabled = true;
+  skipBtn.classList.add("opacity-50", "cursor-not-allowed");
+  closeBtn.classList.add("opacity-50", "cursor-not-allowed");
+
+  let countdown = 5;
+  skipBtn.textContent = `Skip (${countdown})`;
+  const timer = setInterval(() => {
+    countdown--;
+    skipBtn.textContent = countdown > 0 ? `Skip (${countdown})` : "Skip";
+    if (countdown <= 0) {
+      clearInterval(timer);
+      skipBtn.disabled = false;
+      closeBtn.disabled = false;
+      skipBtn.classList.remove("opacity-50", "cursor-not-allowed");
+      closeBtn.classList.remove("opacity-50", "cursor-not-allowed");
+    }
+  }, 1000);
+}
+
+function closeAd() {
+  popup.classList.add("hidden");
+  currentAdIndex++;
+  if (currentAdIndex < ads.length) {
+    // Show next ad after 5s delay
+    setTimeout(() => showAd(currentAdIndex), 5000);
+  }
+}
+
+skipBtn.addEventListener("click", closeAd);
+closeBtn.addEventListener("click", closeAd);
+
+// First ad after 2 seconds
+setTimeout(() => showAd(0), 2000);
+</script>
+   
+  <!-- Friend Card Template -->
+  <div id="friends" class="space-y-8">
+
+    <!-- Giddy Tennor -->
+    <header class="max-w-3xl mx-auto mt-6 bg-blue-800 rounded-xl shadow-lg p-5 border-b-4 border-blue-500 text-center">
+      <div class="flex items-center justify-center space-x-3">
+        <img src="https://url.bwmxmd.online/Adams.xle1zi57.jpg" alt="Telegram logo" class="w-8" />
+        <h1 class="text-2xl font-bold tracking-tight">Trashcore</h1>
+        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828640.png" alt="Verified" class="w-6 animate-spin-slow" />
+      </div>
+      <p class="text-sm mt-1 opacity-80">Vimpire Killer Bug Developer | trashcore bots founder</p>
+      <div class="flex justify-center mt-3 space-x-1">
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" alt="star" class="w-4">
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" alt="star" class="w-4">
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" alt="star" class="w-4">
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" alt="star" class="w-4">
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" alt="star" class="w-4">
+      </div>
+      <div class="mt-4">
+        <img src="https://url.bwmxmd.online/Adams.nad2fu0x.jpg" alt="Profile" class="w-20 h-20 rounded-full border-2 border-white mx-auto object-cover">
+      </div>
+      <div class="mt-4 flex justify-center space-x-4">
+        <a href="https://t.me/+jh4yhoD_XQs2MThk" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" alt="Telegram" class="w-8"></a>
+        <a href="https://chat.whatsapp.com/CzFlFQrkdzxFw0pxCBYM7H?mode=ac_t" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp" class="w-8"></a>
+        <a href="https://youtube.com/@trashcoreclient" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube" class="w-8"></a>
+      </div>
+    </header>
+
+    <!-- Ibrahim Adams -->
+    <header class="max-w-3xl mx-auto bg-blue-800 rounded-xl shadow-lg p-5 border-b-4 border-blue-500 text-center">
+      <div class="flex items-center justify-center space-x-3">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp logo" class="w-8" />
+        <h1 class="text-2xl font-bold tracking-tight">Ibrahim Adams</h1>
+        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828640.png" alt="Verified" class="w-6 animate-spin-slow" />
+      </div>
+      <p class="text-sm mt-1 opacity-80">Bwm Xmd Quantum owner | website designer</p>
+      <div class="flex justify-center mt-3 space-x-1">
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" class="w-4">
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" class="w-4">
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" class="w-4">
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" class="w-4">
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" class="w-4">
+      </div>
+      <div class="mt-4">
+        <img src="https://files.catbox.moe/cthxbc.jpg" alt="Profile" class="w-20 h-20 rounded-full border-2 border-white mx-auto object-cover">
+      </div>
+      <div class="mt-4 flex justify-center space-x-4">
+        <a href="https://t.me/example" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" class="w-8"></a>
+        <a href="https://wa.me/example" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" class="w-8"></a>
+        <a href="https://youtube.com/example" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" class="w-8"></a>
+      </div>
+    </header>
+
+    <!-- DS Primis -->
+    <header class="max-w-3xl mx-auto bg-blue-800 rounded-xl shadow-lg p-5 border-b-4 border-blue-500 text-center">
+      <div class="flex items-center justify-center space-x-3">
+        <img src="https://files.catbox.moe/h07uj6.jpg" alt="Meta" class="w-8" />
+        <h1 class="text-2xl font-bold tracking-tight">DS Primis</h1>
+        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828640.png" alt="Verified" class="w-6 animate-spin-slow" />
+      </div>
+      <p class="text-sm mt-1 opacity-80">Verified Developer</p>
+      <div class="flex justify-center mt-3 space-x-1">
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" class="w-4">
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" class="w-4">
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" class="w-4">
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" class="w-4">
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" class="w-4">
+      </div>
+      <div class="mt-4">
+        <img src="https://files.catbox.moe/03cv8u.jpg" alt="Profile" class="w-20 h-20 rounded-full border-2 border-white mx-auto object-cover">
+      </div>
+      <div class="mt-4 flex justify-center space-x-4">
+        <a href="https://t.me/nova_crash" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" class="w-8"></a>
+        <a href="https://whatsapp.com/channel/0029VbAqjwm1CYoTLEg7KR44" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" class="w-8"></a>
+        <a href="https://www.youtube.com/@DevPrimis-z9e" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" class="w-8"></a>
+      </div>
+    </header>
+
+    <!-- Lord Eagle -->
+    <header class="max-w-3xl mx-auto bg-blue-800 rounded-xl shadow-lg p-5 border-b-4 border-blue-500 text-center">
+      <div class="flex items-center justify-center space-x-3">
+        <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube" class="w-8" />
+        <h1 class="text-2xl font-bold tracking-tight">Lord Eagle</h1>
+        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828640.png" alt="Verified" class="w-6 animate-spin-slow" />
+      </div>
+      <p class="text-sm mt-1 opacity-80">Panel pterodactyl solver | run multiprojects with vps knowledge</p>
+      <div class="flex justify-center mt-3 space-x-1">
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" class="w-4">
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" class="w-4">
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" class="w-4">
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" class="w-4">
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" class="w-4">
+      </div>
+      <div class="mt-4">
+        <img src="https://files.catbox.moe/cthxbc.jpg" alt="Profile" class="w-20 h-20 rounded-full border-2 border-white mx-auto object-cover">
+      </div>
+      <div class="mt-4 flex justify-center space-x-4">
+        <a href="https://t.me/Eagle1591" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" class="w-8"></a>
+        <a href="https://wa.me/example" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" class="w-8"></a>
+        <a href="https://youtube.com/example" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" class="w-8"></a>
+      </div>
+    </header>
+
+  </div>
+  <!-- Bottom Nav -->
+<div class="fixed bottom-0 left-0 right-0 bg-blue-800 text-white flex justify-around p-2 shadow-inner z-50">
+  <!-- Home -->
+  <a href="/dashboard.html" class="text-center flex flex-col items-center">
+    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M3 10.5L12 4l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10.5z" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="block text-xs">Home</span>
+  </a>
+
+  <!-- Info -->
+  <a href="/info.html" class="text-center flex flex-col items-center">
+    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M12 8v.01" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M11.5 12.5h1v3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="block text-xs">Info</span>
+  </a>
+
+  <!-- Friends -->
+  <a href="/friends.html" class="text-center flex flex-col items-center">
+    <svg class="w-6 h-6 animate-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M16 11a3 3 0 1 0-6 0" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M2 20v-1a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v1" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="block text-xs">Friends</span>
+  </a>
+
+  <!-- Projects -->
+  <a href="/projects.html" class="text-center flex flex-col items-center">
+    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M3 7h5l2 3h11v9H3z" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="block text-xs">Projects</span>
+  </a>
+</div>
+
+</body>
+</html>

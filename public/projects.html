@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard | TERMINATOR HOME</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-blue-900 text-white scroll-smooth">
+
+  <!-- Hidden Audio Autoplay -->
+  <audio id="bg-audio" autoplay loop hidden>
+    <source src="assets/bg.mp3" type="audio/mpeg">
+    Your browser does not support audio playback.
+  </audio>
+
+  <!-- Device Info -->
+  <div class="bg-blue-700 p-4 rounded-xl shadow-xl space-y-1 mt-4 mx-2">
+    <p>🕒 Nairobi Time: <span id="time" class="font-mono"></span></p>
+    <p>🔋 Battery: <span id="battery" class="font-mono"></span>%</p>
+    <p>🌐 IP: <span id="ip" class="font-mono"></span></p>
+    <p>📱 Phone Type: <span id="phone-type" class="font-mono"></span></p>
+    <p>📡 Network: <span id="network" class="font-mono"></span></p>
+    <p>📶 Status: <span id="status" class="font-mono"></span></p>
+    <p>📊 Insights: <span id="insights" class="font-mono"></span></p>
+    <p>👥 Viewers Online: <span id="viewers" class="font-mono"></span></p>
+  </div>
+    <!-- Popup Ad -->
+<div id="popup-ad" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-[9999]">
+  <div class="bg-blue-700 rounded-xl shadow-2xl p-6 max-w-sm w-full text-center animate-popup relative">
+    
+    <!-- Cancel Button -->
+    <button id="close-ad" class="absolute top-3 right-3 text-white text-lg bg-red-500 w-8 h-8 flex items-center justify-center rounded-full opacity-50 cursor-not-allowed" disabled>
+      ✕
+    </button>
+
+    <!-- Ad Logo -->
+    <img id="ad-logo" src="" alt="Ad Logo" class="w-16 h-16 mx-auto mb-3 animate-bounce">
+
+    <!-- Ad Title -->
+    <h2 class="text-2xl font-bold mb-3" id="ad-title"></h2>
+
+    <!-- Ad Content -->
+    <p class="mb-4" id="ad-content"></p>
+
+    <!-- Learn More Button -->
+    <a id="ad-link" href="#" target="_blank" 
+       class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold py-2 px-4 rounded-full transition transform hover:scale-105">
+       <img src="https://cdn-icons-png.flaticon.com/512/271/271210.png" class="w-4 h-4" alt="Learn Icon">
+       take me there
+    </a>
+
+    <!-- Skip Button -->
+    <button id="skip-ad" class="mt-4 bg-gray-900 text-white px-4 py-2 rounded-lg opacity-50 cursor-not-allowed" disabled>
+      Skip (5)
+    </button>
+  </div>
+</div>
+
+<style>
+@keyframes popupIn {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.animate-popup {
+  animation: popupIn 0.5s ease forwards;
+}
+</style>
+
+<script>
+const ads = [
+{
+  title: "💰 EARN",
+  content: "Sofabet just got a new plan — earn 20 bob per referral!",
+  link: "https://sofabets.com?ref=67f3a3c8952d77f5800979ff",
+  logo: "https://cdn-icons-png.flaticon.com/512/2331/2331937.png"
+},
+  {
+    title: "🐙 TRASHCORE SYSTEM",
+    content: "Trashcore dev just launched new WhatsApp bot ever ",
+    link: "https://github.com/Tennor-modz/trashcore-system/fork",
+    logo: "https://cdn-icons-png.flaticon.com/512/25/25231.png"
+  },
+  {
+    title: "🔥 Big and limited offer",
+    content: "k star shop sales unlimited panel only 70 kenya money 0.9$ only!",
+    link: "https://jamesofficial.onrender.com/tools/kstar.html",
+    logo: "https://cdn-icons-png.flaticon.com/512/888/888879.png"
+  },
+  {
+    title: "🥳 Boost Your Coding Skills!",
+    content: "Join our free coding bootcamp and level up now.",
+    link: "https://chat.whatsapp.com/G17FOZjkMKVDTBb54G921D?mode=ac_t",
+    logo: "https://cdn-icons-png.flaticon.com/512/1055/1055646.png"
+  }
+];
+
+let currentAdIndex = 0;
+const popup = document.getElementById("popup-ad");
+const skipBtn = document.getElementById("skip-ad");
+const closeBtn = document.getElementById("close-ad");
+
+function showAd(index) {
+  const ad = ads[index];
+  document.getElementById("ad-title").textContent = ad.title;
+  document.getElementById("ad-content").textContent = ad.content;
+  document.getElementById("ad-link").href = ad.link;
+  document.getElementById("ad-logo").src = ad.logo;
+
+  popup.classList.remove("hidden");
+  skipBtn.disabled = true;
+  closeBtn.disabled = true;
+  skipBtn.classList.add("opacity-50", "cursor-not-allowed");
+  closeBtn.classList.add("opacity-50", "cursor-not-allowed");
+
+  let countdown = 5;
+  skipBtn.textContent = `Skip (${countdown})`;
+  const timer = setInterval(() => {
+    countdown--;
+    skipBtn.textContent = countdown > 0 ? `Skip (${countdown})` : "Skip";
+    if (countdown <= 0) {
+      clearInterval(timer);
+      skipBtn.disabled = false;
+      closeBtn.disabled = false;
+      skipBtn.classList.remove("opacity-50", "cursor-not-allowed");
+      closeBtn.classList.remove("opacity-50", "cursor-not-allowed");
+    }
+  }, 1000);
+}
+
+function closeAd() {
+  popup.classList.add("hidden");
+  currentAdIndex++;
+  if (currentAdIndex < ads.length) {
+    // Show next ad after 5s delay
+    setTimeout(() => showAd(currentAdIndex), 5000);
+  }
+}
+
+skipBtn.addEventListener("click", closeAd);
+closeBtn.addEventListener("click", closeAd);
+
+// First ad after 2 seconds
+setTimeout(() => showAd(0), 2000);
+</script>
+   
+<!-- Project Cards -->
+<div class="p-4 space-y-6 mt-4">
+
+  <div class="bg-blue-800 p-6 rounded-xl shadow-2xl">
+    <h2 class="text-2xl font-bold mb-3">💀 BAN TOOL</h2>
+    <p>Ban WhatsApp accounts permanently or flag them for spam detection.</p>
+    <p>Tool includes automated report systems for multiple accounts.</p>
+    <p><strong>⚠ For educational purposes only — do not misuse this tool.</strong></p>
+    <a href="/tools/ban.html" class="mt-4 inline-block bg-white text-blue-800 font-bold px-5 py-3 rounded-lg hover:bg-gray-200 transition">Open Tool</a>
+  </div>
+
+  <div class="bg-blue-800 p-6 rounded-xl shadow-2xl">
+    <h2 class="text-2xl font-bold mb-3">🔗 URL SHORTENER</h2>
+    <p>Shorten your links instantly with advanced tracking and analytics.</p>
+    <p>Includes click statistics, country-based reports, and QR code generation.</p>
+    <p>Perfect for sharing professional and branded short URLs.</p>
+    <a href="/tools/url.html" class="mt-4 inline-block bg-white text-blue-800 font-bold px-5 py-3 rounded-lg hover:bg-gray-200 transition">Open Tool</a>
+  </div>
+
+  <div class="bg-blue-800 p-6 rounded-xl shadow-2xl">
+    <h2 class="text-2xl font-bold mb-3">🎶 YouTube MP3/MP4 Downloader</h2>
+    <p>Download audio or video from YouTube instantly in the highest quality.</p>
+    <p>Supports MP3, MP4, and multiple resolutions with fast conversion.</p>
+    <p>Streamline your music and video collection in seconds.</p>
+    <a href="/tools/play.html" class="mt-4 inline-block bg-white text-blue-800 font-bold px-5 py-3 rounded-lg hover:bg-gray-200 transition">Open Tool</a>
+  </div>
+
+ <div class="bg-blue-800 p-6 rounded-xl shadow-2xl">
+    <h2 class="text-2xl font-bold mb-3">HTML runner pro</h2>
+    <p>run html codes free</p>
+    <p>live preview</p>
+    <p>copy and clear button added too</p>
+    <a href="/tools/run.html" class="mt-4 inline-block bg-white text-blue-800 font-bold px-5 py-3 rounded-lg hover:bg-gray-200 transition">Open Tool</a>
+  </div>
+   <div class="bg-blue-800 p-6 rounded-xl shadow-2xl">
+    <h2 class="text-2xl font-bold mb-3">K star shop</h2>
+    <p>purchase online</p>
+    <p>enjoy unlimited discounts</p>
+    <p>legit services</p>
+    <a href="/tools/kstar.html" class="mt-4 inline-block bg-white text-blue-800 font-bold px-5 py-3 rounded-lg hover:bg-gray-200 transition">Open Tool</a>
+  </div>
+   <div class="bg-blue-800 p-6 rounded-xl shadow-2xl">
+    <h2 class="text-2xl font-bold mb-3">WEB EXTRACTOR</h2>
+    <p>created to extract website source codes for free</p>
+    <p>extract full html fixed css and js too and even external files</p>
+    <p>enjoy</p>
+    <a href="/tools/extract.html" class="mt-4 inline-block bg-white text-blue-800 font-bold px-5 py-3 rounded-lg hover:bg-gray-200 transition">Open Tool</a>
+  </div>
+   <div class="bg-blue-800 p-6 rounded-xl shadow-2xl">
+    <h2 class="text-2xl font-bold mb-3">WhatsApp unban v2</h2>
+    <p>request created by developers will high aproximated unban</p>
+    <p>many messages one of these must work</p>
+    <p>unban your account in less than a week</p>
+    <a href="/tools/unban.html" class="mt-4 inline-block bg-white text-blue-800 font-bold px-5 py-3 rounded-lg hover:bg-gray-200 transition">Open Tool</a>
+  </div>
+   <div class="bg-blue-800 p-6 rounded-xl shadow-2xl">
+    <h2 class="text-2xl font-bold mb-3">ANIME SEARCH</h2>
+    <p>advanced anime download</p>
+    <p>surports all type of system ios, iPhone, android,laptops and any other type</p>
+    <p>fixed version.</p>
+    <a href="/tools/anime.html" class="mt-4 inline-block bg-white text-blue-800 font-bold px-5 py-3 rounded-lg hover:bg-gray-200 transition">Open Tool</a>
+  </div>
+   <div class="bg-blue-800 p-6 rounded-xl shadow-2xl">
+    <h2 class="text-2xl font-bold mb-3">AIO TOOL</h2>
+    <p>Download videos from Facebook</p>
+    <p>Instagram added too</p>
+    <p>aio surport all types of link</p>
+    <a href="/tools/aio.html" class="mt-4 inline-block bg-white text-blue-800 font-bold px-5 py-3 rounded-lg hover:bg-gray-200 transition">Open Tool</a>
+  </div>
+   <div class="bg-blue-800 p-6 rounded-xl shadow-2xl">
+    <h2 class="text-2xl font-bold mb-3">CODING</h2>
+    <p>in this tool you will learn how to</p>
+    <p>𒊹create a website ︎</p>
+    <p>𒊹︎tools and features neded</p>
+    <a href="/tools/learn.html" class="mt-4 inline-block bg-white text-blue-800 font-bold px-5 py-3 rounded-lg hover:bg-gray-200 transition">Open Tool</a>
+  </div>
+   <div class="bg-blue-800 p-6 rounded-xl shadow-2xl">
+    <h2 class="text-2xl font-bold mb-3">pickup lines</h2>
+    <p>become pro</p>
+    <p>learn more than 500 pickup lines</p>
+    <p>enjoy</p>
+    <a href="/tools/pickup.html" class="mt-4 inline-block bg-white text-blue-800 font-bold px-5 py-3 rounded-lg hover:bg-gray-200 transition">Open Tool</a>
+  </div>
+   <div class="bg-blue-800 p-6 rounded-xl shadow-2xl">
+    <h2 class="text-2xl font-bold mb-3">quotes</h2>
+    <p>love quotes</p>
+    <p>wisdom quotes</p>
+    <a href="/tools/quotes.html" class="mt-4 inline-block bg-white text-blue-800 font-bold px-5 py-3 rounded-lg hover:bg-gray-200 transition">Open Tool</a>
+  </div>
+   <div class="bg-blue-800 p-6 rounded-xl shadow-2xl">
+    <h2 class="text-2xl font-bold mb-3">XXX DOWNLOAD</h2>
+    <p>only 18+ allowed to open</p>
+    <p>premium videos</p>
+    <a href="/tools/xxx.html" class="mt-4 inline-block bg-white text-blue-800 font-bold px-5 py-3 rounded-lg hover:bg-gray-200 transition">Open Tool</a>
+  </div>
+
+   <div class="bg-blue-800 p-6 rounded-xl shadow-2xl">
+    <h2 class="text-2xl font-bold mb-3">title</h2>
+    <p>Desc</p>
+    <p>desc.</p>
+    <p>desc.</p>
+    <a href="/tools/example.html" class="mt-4 inline-block bg-white text-blue-800 font-bold px-5 py-3 rounded-lg hover:bg-gray-200 transition">Open Tool</a>
+  </div>
+   <!-- More project cards can follow here -->
+</div>
+  <!-- Socials -->
+  <div class="bg-blue-900 p-4 text-center space-x-3">
+    <a href="https://t.me/jamespydev" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" alt="Telegram" width="28"></a>
+    <a href="https://whatsapp.com/channel/0029VbAvTlFF6sn87Kjibf3W" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp" width="28"></a>
+    <a href="https://youtube.com/@james-j2i9h" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube" width="28"></a>
+  </div>
+
+<!-- Bottom Nav -->
+<div class="fixed bottom-0 left-0 right-0 bg-blue-800 text-white flex justify-around p-2 shadow-inner z-50">
+  <!-- Home -->
+  <a href="/dashboard.html" class="text-center flex flex-col items-center">
+    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M3 10.5L12 4l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10.5z" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="block text-xs">Home</span>
+  </a>
+
+  <!-- Info -->
+  <a href="/info.html" class="text-center flex flex-col items-center">
+    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M12 8v.01" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M11.5 12.5h1v3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="block text-xs">Info</span>
+  </a>
+
+  <!-- Friends -->
+  <a href="/friends.html" class="text-center flex flex-col items-center">
+    <svg class="w-6 h-6 animate-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M16 11a3 3 0 1 0-6 0" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M2 20v-1a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v1" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="block text-xs">Friends</span>
+  </a>
+
+  <!-- Projects -->
+  <a href="/projects.html" class="text-center flex flex-col items-center">
+    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M3 7h5l2 3h11v9H3z" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="block text-xs">Projects</span>
+  </a>
+</div>
+
+  <!-- Scripts -->
+  <script>
+    // Nairobi time
+    setInterval(() => {
+      const time = new Date().toLocaleString("en-KE", { timeZone: "Africa/Nairobi" });
+      document.getElementById('time').textContent = time;
+    }, 1000);
+
+    // Battery info
+    if (navigator.getBattery) {
+      navigator.getBattery().then(b => {
+        const updateBattery = () => {
+          document.getElementById('battery').textContent = Math.round(b.level * 100);
+        };
+        updateBattery();
+        b.addEventListener('levelchange', updateBattery);
+      });
+    }
+
+    // IP fetch
+    fetch('https://api.ipify.org?format=json')
+      .then(res => res.json())
+      .then(data => document.getElementById('ip').textContent = data.ip);
+
+    // Phone Info
+    const ua = navigator.userAgent;
+    document.getElementById('phone-type').textContent = /Android/i.test(ua) ? "Android" :
+                                                         /iPhone|iPad|iPod/i.test(ua) ? "iOS" :
+                                                         /Windows/i.test(ua) ? "Windows" : "Unknown";
+
+    document.getElementById('network').textContent = navigator.connection ? navigator.connection.effectiveType : 'N/A';
+    document.getElementById('status').textContent = navigator.onLine ? 'Online' : 'Offline';
+    document.getElementById('insights').textContent = ua;
+
+    // Random viewers
+    document.getElementById('viewers').textContent = Math.floor(Math.random() * 5 + 1);
+  </script>
+</body>
+</html>

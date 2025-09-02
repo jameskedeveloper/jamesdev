@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TERMINATOR HOME</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-blue-900 text-white scroll-smooth font-sans">
+
+ <!-- Page Title -->
+<header class="text-center py-4 bg-blue-800 shadow-lg border-b-4 border-blue-500">
+  <h1 class="text-2xl font-bold flex items-center justify-center space-x-3">
+    <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png" alt="Dashboard" class="w-8">
+    <span>TERMINATOR</span>
+    <img src="https://cdn-icons-png.flaticon.com/512/1828/1828640.png" alt="Verified" class="w-5">
+  </h1>
+
+  <!-- Stars -->
+  <div class="flex justify-center mt-2 space-x-1">
+    <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" class="w-4">
+    <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" class="w-4">
+    <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" class="w-4">
+    <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" class="w-4">
+    <img src="https://cdn-icons-png.flaticon.com/512/616/616489.png" class="w-4">
+  </div>
+
+  <!-- Profile Image -->
+  <div class="mt-3">
+    <img src="https://files.catbox.moe/cthxbc.jpg" alt="Profile" class="w-16 h-16 rounded-full border-2 border-white mx-auto">
+  </div>
+</header>
+  <!-- Device Info -->
+  <main class="max-w-3xl mx-auto mt-5 p-4 bg-blue-700 rounded-xl shadow-xl space-y-2">
+    <p><img src="https://cdn-icons-png.flaticon.com/512/1827/1827370.png" width="20" class="inline"> Nairobi Time: <span id="time" class="font-mono"></span></p>
+    <p><img src="https://cdn-icons-png.flaticon.com/512/3103/3103446.png" width="20" class="inline"> Battery: <span id="battery" class="font-mono"></span>%</p>
+    <p><img src="https://cdn-icons-png.flaticon.com/512/3039/3039383.png" width="20" class="inline"> IP: <span id="ip" class="font-mono"></span></p>
+    <p><img src="https://cdn-icons-png.flaticon.com/512/1828/1828833.png" width="20" class="inline"> Phone Type: <span id="phone-type" class="font-mono"></span></p>
+    <p><img src="https://cdn-icons-png.flaticon.com/512/2991/2991167.png" width="20" class="inline"> Network: <span id="network" class="font-mono"></span></p>
+    <p><img src="https://cdn-icons-png.flaticon.com/512/4440/4440953.png" width="20" class="inline"> Status: <span id="status" class="font-mono"></span></p>
+    <p><img src="https://cdn-icons-png.flaticon.com/512/1828/1828817.png" width="20" class="inline"> Insights: <span id="insights" class="font-mono"></span></p>
+    <p><img src="https://cdn-icons-png.flaticon.com/512/1828/1828810.png" width="20" class="inline"> Viewers Online: <span id="viewers" class="font-mono"></span></p>
+ 
+    <!-- Popup Ad -->
+<div id="popup-ad" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-[9999]">
+  <div class="bg-blue-700 rounded-xl shadow-2xl p-6 max-w-sm w-full text-center animate-popup relative">
+    
+    <!-- Cancel Button -->
+    <button id="close-ad" class="absolute top-3 right-3 text-white text-lg bg-red-500 w-8 h-8 flex items-center justify-center rounded-full opacity-50 cursor-not-allowed" disabled>
+      ✕
+    </button>
+
+    <!-- Ad Logo -->
+    <img id="ad-logo" src="" alt="Ad Logo" class="w-16 h-16 mx-auto mb-3 animate-bounce">
+
+    <!-- Ad Title -->
+    <h2 class="text-2xl font-bold mb-3" id="ad-title"></h2>
+
+    <!-- Ad Content -->
+    <p class="mb-4" id="ad-content"></p>
+
+    <!-- Learn More Button -->
+    <a id="ad-link" href="#" target="_blank" 
+       class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold py-2 px-4 rounded-full transition transform hover:scale-105">
+       <img src="https://cdn-icons-png.flaticon.com/512/271/271210.png" class="w-4 h-4" alt="Learn Icon">
+       take me there
+    </a>
+
+    <!-- Skip Button -->
+    <button id="skip-ad" class="mt-4 bg-gray-900 text-white px-4 py-2 rounded-lg opacity-50 cursor-not-allowed" disabled>
+      Skip (5)
+    </button>
+  </div>
+</div>
+
+<style>
+@keyframes popupIn {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.animate-popup {
+  animation: popupIn 0.5s ease forwards;
+}
+</style>
+
+<script>
+const ads = [
+{
+  title: "💰 EARN",
+  content: "Sofabet just got a new plan — earn 20 bob per referral!",
+  link: "https://sofabets.com?ref=67f3a3c8952d77f5800979ff",
+  logo: "https://cdn-icons-png.flaticon.com/512/2331/2331937.png"
+},
+  {
+    title: "🐙 TRASHCORE SYSTEM",
+    content: "Trashcore dev just launched new WhatsApp bot ever ",
+    link: "https://github.com/Tennor-modz/trashcore-system/fork",
+    logo: "https://cdn-icons-png.flaticon.com/512/25/25231.png"
+  },
+  {
+    title: "🔥 Big and limited offer",
+    content: "k star shop sales unlimited panel only 70 kenya money 0.9$ only!",
+    link: "https://jamesofficial.onrender.com/tools/kstar.html",
+    logo: "https://cdn-icons-png.flaticon.com/512/888/888879.png"
+  },
+  {
+    title: "🥳 Boost Your Coding Skills!",
+    content: "Join our free coding bootcamp and level up now.",
+    link: "https://chat.whatsapp.com/G17FOZjkMKVDTBb54G921D?mode=ac_t",
+    logo: "https://cdn-icons-png.flaticon.com/512/1055/1055646.png"
+  }
+];
+
+let currentAdIndex = 0;
+const popup = document.getElementById("popup-ad");
+const skipBtn = document.getElementById("skip-ad");
+const closeBtn = document.getElementById("close-ad");
+
+function showAd(index) {
+  const ad = ads[index];
+  document.getElementById("ad-title").textContent = ad.title;
+  document.getElementById("ad-content").textContent = ad.content;
+  document.getElementById("ad-link").href = ad.link;
+  document.getElementById("ad-logo").src = ad.logo;
+
+  popup.classList.remove("hidden");
+  skipBtn.disabled = true;
+  closeBtn.disabled = true;
+  skipBtn.classList.add("opacity-50", "cursor-not-allowed");
+  closeBtn.classList.add("opacity-50", "cursor-not-allowed");
+
+  let countdown = 5;
+  skipBtn.textContent = `Skip (${countdown})`;
+  const timer = setInterval(() => {
+    countdown--;
+    skipBtn.textContent = countdown > 0 ? `Skip (${countdown})` : "Skip";
+    if (countdown <= 0) {
+      clearInterval(timer);
+      skipBtn.disabled = false;
+      closeBtn.disabled = false;
+      skipBtn.classList.remove("opacity-50", "cursor-not-allowed");
+      closeBtn.classList.remove("opacity-50", "cursor-not-allowed");
+    }
+  }, 1000);
+}
+
+function closeAd() {
+  popup.classList.add("hidden");
+  currentAdIndex++;
+  if (currentAdIndex < ads.length) {
+    // Show next ad after 5s delay
+    setTimeout(() => showAd(currentAdIndex), 5000);
+  }
+}
+
+skipBtn.addEventListener("click", closeAd);
+closeBtn.addEventListener("click", closeAd);
+
+// First ad after 2 seconds
+setTimeout(() => showAd(0), 2000);
+</script>
+   
+<!-- Verified & Meta Logos -->
+<div class="mt-4 p-3 bg-blue-800 rounded-lg">
+  <div class="flex items-center space-x-2 mb-3">
+    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968896.png" width="30" alt="Meta">
+    <span class="text-sm font-semibold text-white">james skills</span>
+    <img src="https://cdn-icons-png.flaticon.com/512/1828/1828640.png" width="20" alt="Verified">
+  </div>
+
+  <!-- Skills Showcase (Static) -->
+  <div class="grid grid-cols-6 gap-3">
+    <img src="https://cdn-icons-png.flaticon.com/512/919/919841.png" alt="Python">
+    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968292.png" alt="JavaScript">
+    <img src="https://cdn-icons-png.flaticon.com/512/919/919853.png" alt="HTML5">
+    <img src="https://cdn-icons-png.flaticon.com/512/919/919826.png" alt="CSS3">
+    <img src="https://cdn-icons-png.flaticon.com/512/919/919854.png" alt="PHP">
+    <img src="https://cdn-icons-png.flaticon.com/512/919/919830.png" alt="Java">
+    <img src="https://cdn-icons-png.flaticon.com/512/919/919847.png" alt="C++">
+    <img src="https://cdn-icons-png.flaticon.com/512/919/919842.png" alt="C#">
+    <img src="https://cdn-icons-png.flaticon.com/512/919/919840.png" alt="C">
+    <img src="https://cdn-icons-png.flaticon.com/512/919/919832.png" alt="Ruby">
+    <img src="https://cdn-icons-png.flaticon.com/512/919/919852.png" alt="Swift">
+    <img src="https://cdn-icons-png.flaticon.com/512/919/919844.png" alt="Kotlin">
+    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968672.png" alt="Go">
+    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968322.png" alt="Rust">
+    <img src="https://cdn-icons-png.flaticon.com/512/919/919827.png" alt="Scala">
+    <img src="https://cdn-icons-png.flaticon.com/512/919/919837.png" alt="Perl">
+    <img src="https://cdn-icons-png.flaticon.com/512/919/919836.png" alt="Lua">
+    <img src="https://cdn-icons-png.flaticon.com/512/919/919843.png" alt="R">
+    <img src="https://cdn-icons-png.flaticon.com/512/919/919839.png" alt="Matlab">
+    <img src="https://cdn-icons-png.flaticon.com/512/919/919831.png" alt="TypeScript">
+    <img src="https://cdn-icons-png.flaticon.com/512/919/919850.png" alt="Dart">
+    <img src="https://cdn-icons-png.flaticon.com/512/919/919851.png" alt="Haskell">
+    <img src="https://cdn-icons-png.flaticon.com/512/919/919849.png" alt="Objective-C">
+    <img src="https://cdn-icons-png.flaticon.com/512/919/919838.png" alt="Shell">
+  </div>
+</div>
+  </main>
+
+  <!-- Hidden Audio -->
+  <audio id="bg-audio" autoplay loop hidden>
+    <source src="assets/bg.mp3" type="audio/mpeg">
+    Your browser does not support audio playback.
+  </audio>
+<!-- Bottom Nav -->
+<div class="fixed bottom-0 left-0 right-0 bg-blue-800 text-white flex justify-around p-2 shadow-inner z-50">
+  <!-- Home -->
+  <a href="/dashboard.html" class="text-center flex flex-col items-center">
+    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M3 10.5L12 4l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10.5z" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="block text-xs">Home</span>
+  </a>
+
+  <!-- Info -->
+  <a href="/info.html" class="text-center flex flex-col items-center">
+    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M12 8v.01" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M11.5 12.5h1v3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="block text-xs">Info</span>
+  </a>
+
+  <!-- Friends -->
+  <a href="/friends.html" class="text-center flex flex-col items-center">
+    <svg class="w-6 h-6 animate-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M16 11a3 3 0 1 0-6 0" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M2 20v-1a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v1" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="block text-xs">Friends</span>
+  </a>
+
+  <!-- Projects -->
+  <a href="/projects.html" class="text-center flex flex-col items-center">
+    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M3 7h5l2 3h11v9H3z" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="block text-xs">Projects</span>
+  </a>
+</div>
+
+  <!-- socials -->
+
+  <div class="bg-blue-900 p-4 text-center space-x-3">
+    <a href="https://t.me/jamespydev" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" alt="Telegram" width="28"></a>
+    <a href="https://whatsapp.com/channel/0029VbAvTlFF6sn87Kjibf3W" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp" width="28"></a>
+    <a href="https://youtube.com/@james-j2i9h" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube" width="28"></a>
+  </div>
+
+  <!-- Script -->
+  <script>
+    // Nairobi time
+    setInterval(() => {
+      const time = new Date().toLocaleString("en-KE", { timeZone: "Africa/Nairobi" });
+      document.getElementById('time').textContent = time;
+    }, 1000);
+
+    // Battery status
+    if (navigator.getBattery) {
+      navigator.getBattery().then(b => {
+        const updateBattery = () => {
+          document.getElementById('battery').textContent = Math.round(b.level * 100);
+        };
+        updateBattery();
+        b.addEventListener('levelchange', updateBattery);
+      });
+    }
+
+    // IP fetch
+    fetch('https://api.ipify.org?format=json')
+      .then(res => res.json())
+      .then(data => document.getElementById('ip').textContent = data.ip);
+
+    // Phone Info
+    const ua = navigator.userAgent;
+    document.getElementById('phone-type').textContent = /Android/i.test(ua) ? "Android" :
+                                                         /iPhone|iPad|iPod/i.test(ua) ? "iOS" :
+                                                         /Windows/i.test(ua) ? "Windows" : "Unknown";
+
+    document.getElementById('network').textContent = navigator.connection ? navigator.connection.effectiveType : 'N/A';
+    document.getElementById('status').textContent = navigator.onLine ? 'Online' : 'Offline';
+    document.getElementById('insights').textContent = ua;
+
+    // Viewers (placeholder)
+    document.getElementById('viewers').textContent = Math.floor(Math.random() * 5 + 1);
+  </script>
+</body>
+</html>
